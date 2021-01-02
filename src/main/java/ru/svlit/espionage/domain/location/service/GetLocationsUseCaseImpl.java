@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class GetLocationsUseCaseImpl implements GetLocationsUseCase {
+class GetLocationsUseCaseImpl implements GetLocationsUseCase {
 
     private final GetLocationsPort getLocationsPort;
 

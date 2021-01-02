@@ -19,7 +19,7 @@ import static java.util.Collections.unmodifiableList;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GetRoomsUseCaseImpl implements GetRoomsUseCase {
+class GetRoomsUseCaseImpl implements GetRoomsUseCase {
 
     private final GetRoomsPort getRoomsPort;
 

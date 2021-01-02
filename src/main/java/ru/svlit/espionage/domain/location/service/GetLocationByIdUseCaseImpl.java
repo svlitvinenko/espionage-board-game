@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class GetLocationByIdUseCaseImpl implements GetLocationByIdUseCase {
+class GetLocationByIdUseCaseImpl implements GetLocationByIdUseCase {
 
     private final GetLocationByIdPort getLocationByIdPort;
 

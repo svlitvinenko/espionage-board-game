@@ -25,7 +25,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CreateRoomUseCaseImpl implements CreateRoomUseCase {
+class CreateRoomUseCaseImpl implements CreateRoomUseCase {
 
     private final StoreRoomPort storeRoomPort;
     private final GetCurrentUserUseCase getCurrentUserUseCase;

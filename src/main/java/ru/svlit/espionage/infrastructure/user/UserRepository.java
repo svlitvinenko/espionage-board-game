@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Sergei Litvinenko on 01.01.2021.
  */
 @Repository
-public interface UserRepository extends MongoRepository<UserModel, String> {
+interface UserRepository extends MongoRepository<UserModel, String> {
 
     Optional<UserModel> findByUsername(String username);
 }

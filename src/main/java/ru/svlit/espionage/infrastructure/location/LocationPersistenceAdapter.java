@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
  */
 @Component
 @RequiredArgsConstructor
-public class LocationPersistenceAdapter implements GetLocationsPort, GetLocationByIdPort, AddLocationPort {
+class LocationPersistenceAdapter implements GetLocationsPort, GetLocationByIdPort, AddLocationPort {
 
     private final LocationRepository locationRepository;
 

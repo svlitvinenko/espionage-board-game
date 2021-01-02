@@ -20,7 +20,7 @@ import static java.util.Collections.unmodifiableList;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RoomPersistenceAdapter implements GetRoomsPort, StoreRoomPort {
+class RoomPersistenceAdapter implements GetRoomsPort, StoreRoomPort {
 
     private final List<Room> rooms = new CopyOnWriteArrayList<>();
 

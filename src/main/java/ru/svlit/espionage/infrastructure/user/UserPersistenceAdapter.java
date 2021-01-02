@@ -25,7 +25,7 @@ import static ru.svlit.espionage.domain.user.entity.Role.USER;
  */
 @Component
 @RequiredArgsConstructor
-public class UserPersistenceAdapter implements FindUserByIdPort, FindUserByUsernamePort, SignUpPort, UserDetailsService {
+class UserPersistenceAdapter implements FindUserByIdPort, FindUserByUsernamePort, SignUpPort, UserDetailsService {
 
     private final UserRepository userRepository;
 

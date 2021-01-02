@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * @author Sergei Litvinenko on 01.01.2021.
  */
 @Repository
-public interface LocationRepository extends MongoRepository<LocationModel, String> {
+interface LocationRepository extends MongoRepository<LocationModel, String> {
 }

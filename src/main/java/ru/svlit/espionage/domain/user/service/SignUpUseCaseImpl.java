@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class SignUpUseCaseImpl implements SignUpUseCase {
+class SignUpUseCaseImpl implements SignUpUseCase {
 
     private final FindUserByUsernameUseCase findUserByUsernameUseCase;
     private final SignUpPort signUpPort;

@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AddLocationUseCaseImpl implements AddLocationUseCase {
+class AddLocationUseCaseImpl implements AddLocationUseCase {
 
     private final AddLocationPort addLocationPort;
     private final GetLocationByIdPort getLocationByIdPort;

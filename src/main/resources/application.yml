@@ -1,5 +1,12 @@
+espionage:
+  database-connection-string: mongodb+srv://espionage-spring:espionage@cluster0.4t2hp.mongodb.net/<dbname>?retryWrites=true&w=majority
+  database-name: espionage-test
+
 logging:
   level:
     org:
       springframework:
         security: DEBUG
+
+server:
+  forward-headers-strategy: FRAMEWORK

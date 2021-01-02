@@ -18,7 +18,7 @@
     <description>Расширяемая версия настольной игры &quot;Находка для шпиона&quot;</description>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
@@ -69,6 +69,34 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-webapp-maven-plugin</artifactId>
+                <configuration>
+                    <schemaVersion>v2</schemaVersion>
+                    <resourceGroup>maven-plugin</resourceGroup>
+                    <appName>Espionage</appName>
+                    <region>East US</region>
+                    <runtime>
+                        <os>linux</os>
+                        <javaVersion>jre11</javaVersion>
+                        <webContainer>Tomcat 8.5</webContainer>
+                    </runtime>
+                    <deployment>
+                        <resources>
+                            <resource>
+                                <directory>${project.basedir}/target</directory>
+                                <includes>
+                                    <include>*.jar</include>
+                                </includes>
+                            </resource>
+                        </resources>
+                    </deployment>
+                    <pricingTier>F1</pricingTier>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 

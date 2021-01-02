@@ -22,23 +22,14 @@ public class LocationModel {
     private final String id;
     private final String name;
     private final String avatar;
+    private final String authorId;
     private final List<ProfessionModel> professions;
-    private final AuthorModel author;
 
     @Getter
     @ToString
     @EqualsAndHashCode
     @RequiredArgsConstructor
     public static class ProfessionModel {
-        private final String id;
-        private final String name;
-    }
-
-    @Getter
-    @ToString
-    @EqualsAndHashCode
-    @RequiredArgsConstructor
-    public static class AuthorModel {
         private final String id;
         private final String name;
     }

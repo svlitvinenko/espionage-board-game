@@ -8,7 +8,9 @@ import ru.svlit.espionage.domain.location.entity.Profession;
 import ru.svlit.espionage.domain.location.port.AddLocationPort;
 import ru.svlit.espionage.domain.location.port.GetLocationByIdPort;
 import ru.svlit.espionage.domain.location.port.GetLocationsPort;
-import ru.svlit.espionage.infrastructure.location.LocationModel.AuthorModel;
+import ru.svlit.espionage.domain.user.entity.User;
+import ru.svlit.espionage.domain.user.usecase.FindUserByIdUseCase;
+import ru.svlit.espionage.domain.user.usecase.FindUserByIdUseCase.FindUserByIdCommand;
 import ru.svlit.espionage.infrastructure.location.LocationModel.ProfessionModel;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 class LocationPersistenceAdapter implements GetLocationsPort, GetLocationByIdPort, AddLocationPort {
 
     private final LocationRepository locationRepository;
+    private final FindUserByIdUseCase findUserByIdUseCase;
 
     @Override
     public Optional<Location> getLocationById(String id) {
@@ -43,12 +46,13 @@ class LocationPersistenceAdapter implements GetLocationsPort, GetLocationByIdPor
     }
 
     private Location convertLocationModelToDomain(LocationModel locationModel) {
+        final User author = findUserByIdUseCase.findUserById(new FindUserByIdCommand(locationModel.getAuthorId())).orElseThrow();
         return new Location(
                 locationModel.getId(),
                 locationModel.getName(),
                 locationModel.getAvatar(),
                 locationModel.getProfessions().stream().map(this::convertProfessionModelToDomain).collect(toUnmodifiableList()),
-                new Author(locationModel.getAuthor().getId(), locationModel.getAuthor().getName())
+                new Author(author.getId(), author.getUsername())
         );
     }
 
@@ -57,8 +61,8 @@ class LocationPersistenceAdapter implements GetLocationsPort, GetLocationByIdPor
                 location.getId(),
                 location.getName(),
                 location.getAvatar(),
-                location.getProfessions().stream().map(this::convertProfessionFromDomain).collect(toUnmodifiableList()),
-                new AuthorModel(location.getAuthor().getId(), location.getAuthor().getName())
+                location.getAuthor().getId(),
+                location.getProfessions().stream().map(this::convertProfessionFromDomain).collect(toUnmodifiableList())
         );
     }
 

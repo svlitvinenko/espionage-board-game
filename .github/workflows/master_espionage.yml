@@ -29,4 +29,4 @@ jobs:
         app-name: 'espionage'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_e8451d4fae274e809b641c020c1f9db5 }}
-        package: '${{ github.workspace }}/target/*.war'
+        package: '${{ github.workspace }}/target/*.jar'

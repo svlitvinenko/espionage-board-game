@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface AddLocationUseCase {
 
-    Location addLocation(AddLocationCommand command);
+    Location addLocation(AddLocationCommand command) throws NotEnoughInfoToCreateLocationException;
 
     @Getter
     @ToString
@@ -33,6 +33,13 @@ public interface AddLocationUseCase {
         @RequiredArgsConstructor
         public static class Profession {
             private final String name;
+        }
+    }
+
+    class NotEnoughInfoToCreateLocationException extends Exception {
+
+        public NotEnoughInfoToCreateLocationException(Throwable cause) {
+            super(cause);
         }
     }
 }

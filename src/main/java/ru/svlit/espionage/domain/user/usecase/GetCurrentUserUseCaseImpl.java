@@ -14,13 +14,13 @@ import ru.svlit.espionage.domain.user.entity.User;
 @RequiredArgsConstructor
 class GetCurrentUserUseCaseImpl implements GetCurrentUserUseCase {
     @Override
-    public User getCurrentUser() {
+    public User getCurrentUser() throws CurrentUserIsUnauthorizedException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof User) {
             return (User) principal;
         } else {
-            throw new IllegalStateException("Could not retrieve current user.");
+            throw new CurrentUserIsUnauthorizedException();
         }
     }
 }

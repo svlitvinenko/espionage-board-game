@@ -10,6 +10,7 @@ import ru.svlit.espionage.api.location.response.GetLocationsResponse;
 import ru.svlit.espionage.domain.location.entity.Location;
 import ru.svlit.espionage.domain.location.usecase.AddLocationUseCase;
 import ru.svlit.espionage.domain.location.usecase.AddLocationUseCase.AddLocationCommand;
+import ru.svlit.espionage.domain.location.usecase.AddLocationUseCase.NotEnoughInfoToCreateLocationException;
 import ru.svlit.espionage.domain.location.usecase.GetLocationByIdUseCase;
 import ru.svlit.espionage.domain.location.usecase.GetLocationByIdUseCase.GetLocationByIdCommand;
 import ru.svlit.espionage.domain.location.usecase.GetLocationsUseCase;
@@ -18,8 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
-import static org.springframework.http.ResponseEntity.notFound;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 /**
  * Контроллер игровых локаций.
@@ -66,7 +66,12 @@ class LocationController {
                 request.getAvatar()
         );
 
-        final Location location = addLocationUseCase.addLocation(command);
+        final Location location;
+        try {
+            location = addLocationUseCase.addLocation(command);
+        } catch (NotEnoughInfoToCreateLocationException e) {
+            return badRequest().build();
+        }
 
         return ok(convertLocationToResponse(location));
     }

@@ -9,5 +9,8 @@ import ru.svlit.espionage.domain.user.entity.User;
  */
 public interface GetCurrentUserUseCase {
 
-    User getCurrentUser();
+    User getCurrentUser() throws CurrentUserIsUnauthorizedException;
+
+    class CurrentUserIsUnauthorizedException extends Exception {
+    }
 }

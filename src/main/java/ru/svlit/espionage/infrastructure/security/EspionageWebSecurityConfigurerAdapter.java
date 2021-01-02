@@ -3,6 +3,7 @@ package ru.svlit.espionage.infrastructure.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +19,7 @@ import ru.svlit.espionage.domain.user.entity.Role;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpMethod.GET;
 import static ru.svlit.espionage.domain.user.entity.Role.ADMIN;
 import static ru.svlit.espionage.domain.user.entity.Role.USER;
 
@@ -27,7 +29,7 @@ import static ru.svlit.espionage.domain.user.entity.Role.USER;
  * @author Sergei Litvinenko on 01.01.2021.
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class EspionageWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
@@ -48,6 +50,16 @@ public class EspionageWebSecurityConfigurerAdapter extends WebSecurityConfigurer
                 .authorizeRequests()
                 .antMatchers("/user/id", "/user/username")
                 .hasAnyAuthority(Set.of(USER, ADMIN).stream().map(Role::name).toArray(String[]::new))
+
+                .and()
+                .authorizeRequests()
+                .antMatchers("/rooms/observe")
+                .permitAll()
+
+                .and()
+                .authorizeRequests()
+                .antMatchers(GET, "/rooms")
+                .permitAll()
 
                 .and()
                 .authorizeRequests()

@@ -1,6 +1,7 @@
 package ru.svlit.espionage.domain.location.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.svlit.espionage.domain.location.entity.Author;
 import ru.svlit.espionage.domain.location.entity.Location;
@@ -10,6 +11,7 @@ import ru.svlit.espionage.domain.location.port.GetLocationByIdPort;
 import ru.svlit.espionage.domain.location.usecase.AddLocationUseCase;
 import ru.svlit.espionage.domain.user.entity.User;
 import ru.svlit.espionage.domain.user.usecase.GetCurrentUserUseCase;
+import ru.svlit.espionage.domain.user.usecase.GetCurrentUserUseCase.CurrentUserIsUnauthorizedException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -21,6 +23,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
  *
  * @author Sergei Litvinenko on 01.01.2021.
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AddLocationUseCaseImpl implements AddLocationUseCase {
@@ -30,9 +33,14 @@ public class AddLocationUseCaseImpl implements AddLocationUseCase {
     private final GetCurrentUserUseCase getCurrentUserUseCase;
 
     @Override
-    public Location addLocation(AddLocationCommand command) {
+    public Location addLocation(AddLocationCommand command) throws NotEnoughInfoToCreateLocationException {
         final String id = UUID.randomUUID().toString();
-        final User currentUser = getCurrentUserUseCase.getCurrentUser();
+        final User currentUser;
+        try {
+            currentUser = getCurrentUserUseCase.getCurrentUser();
+        } catch (CurrentUserIsUnauthorizedException e) {
+            throw new NotEnoughInfoToCreateLocationException(e);
+        }
         final Location location = new Location(
                 id,
                 command.getName(),

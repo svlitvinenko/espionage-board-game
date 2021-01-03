@@ -1,7 +1,11 @@
 package ru.svlit.espionage.api.room.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -19,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -29,8 +34,9 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @Slf4j
 @RestController
-@RequestMapping("/rooms")
 @RequiredArgsConstructor
+@RequestMapping("/rooms")
+@Api(value = "Rooms API")
 class RoomController {
 
     private final List<SseEmitter> sseEmitters = new CopyOnWriteArrayList<>();
@@ -38,7 +44,8 @@ class RoomController {
     private final CreateRoomUseCase createRoomUseCase;
     private final GetRoomsUseCase getRoomsUseCase;
 
-    @RequestMapping("/observe")
+    @RequestMapping(value = "/observe")
+    @ApiOperation(value = "Подписка на открытые комнаты", authorizations = {@Authorization("USER"), @Authorization("ADMIN")})
     public SseEmitter subscribeToRooms() {
         log.info("Request: subscribe to rooms list");
         final SseEmitter emitter = new SseEmitter();
@@ -50,7 +57,8 @@ class RoomController {
         return emitter;
     }
 
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Получение всех комнат")
     public ResponseEntity<RoomsResponse> getRooms() {
         final List<Room> rooms = getRoomsUseCase.getRooms();
         final RoomsResponse response = convertFromRoomsToResponse(rooms);
@@ -58,6 +66,7 @@ class RoomController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Создание комнаты", authorizations = {@Authorization("USER"), @Authorization("ADMIN")})
     public ResponseEntity<?> createRoom(@RequestBody CreateRoomRequest request) {
         log.info("Request: create room with name " + request.getName());
         try {

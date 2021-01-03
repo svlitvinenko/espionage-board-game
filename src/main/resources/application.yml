@@ -10,3 +10,5 @@ logging:
 
 server:
   forward-headers-strategy: FRAMEWORK
+  servlet:
+    context-path: /api/v1

@@ -1,6 +1,10 @@
 package ru.svlit.espionage.api.location.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.svlit.espionage.api.location.request.AddLocationRequest;
@@ -19,6 +23,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.*;
 
 /**
@@ -29,13 +35,15 @@ import static org.springframework.http.ResponseEntity.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/locations")
+@Api(value = "Locations API")
 class LocationController {
 
     private final GetLocationsUseCase getLocationsUseCase;
     private final GetLocationByIdUseCase getLocationByIdUseCase;
     private final AddLocationUseCase addLocationUseCase;
 
-    @GetMapping("/single/{id}")
+    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Получение деталей локации по её идентификатору", authorizations = {@Authorization("USER"), @Authorization("ADMIN")})
     public ResponseEntity<GetLocationResponse> getLocation(@PathVariable String id) {
         final Optional<Location> locationOptional = getLocationByIdUseCase.getLocationById(new GetLocationByIdCommand(id));
 
@@ -46,7 +54,8 @@ class LocationController {
         return ok(convertLocationToResponse(locationOptional.get()));
     }
 
-    @GetMapping("/all")
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Получение всех локаций", authorizations = {@Authorization("USER"), @Authorization("ADMIN")})
     public ResponseEntity<GetLocationsResponse> getLocations() {
         final List<Location> locations = getLocationsUseCase.getLocations();
         final GetLocationsResponse response = new GetLocationsResponse(
@@ -55,7 +64,8 @@ class LocationController {
         return ok(response);
     }
 
-    @PostMapping
+    @PostMapping(produces = APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Добавление локации", authorizations = {@Authorization("USER"), @Authorization("ADMIN")})
     public ResponseEntity<GetLocationResponse> addLocation(@RequestBody AddLocationRequest request) {
         final AddLocationCommand command = new AddLocationCommand(
                 request.getName(),
@@ -76,7 +86,8 @@ class LocationController {
         return ok(convertLocationToResponse(location));
     }
 
-    @PatchMapping
+    @PatchMapping(produces = APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Обновление локации", authorizations = {@Authorization("USER"), @Authorization("ADMIN")})
     public ResponseEntity<GetLocationResponse> updateLocationProfessions(@RequestBody UpdateLocationProfessionsRequest request) {
         return ResponseEntity.badRequest().build();
     }
